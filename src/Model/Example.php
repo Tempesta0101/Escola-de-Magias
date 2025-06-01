@@ -8,6 +8,6 @@ final class Example
 {
     public function sayHello(): string
     {
-        return "Hi, OOP World in PHP!\n";
+        return "!\n";
     }
 }
