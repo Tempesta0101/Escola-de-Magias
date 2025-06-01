@@ -51,7 +51,7 @@ class App
                 echo "Opção inválida.\n";
                 break;
         }
-        // Re-executa o menu após ação
+        
         $this->run();
     }
 }
