@@ -1,56 +1,6 @@
 <?php
+
 namespace Hogwarts\Model\ConviteCadastro;
-
-class Aluno
-{
-    private string $nome;
-    private string $email;
-    private bool $conviteEnviado = false;
-    private bool $confirmaRecebimento = false;
-
-    public function __construct(string $nome, string $email)
-    {
-        $this->nome = $nome;
-        $this->email = $email;
-    }
-
-    public function getNome(): string
-    {
-        return $this->nome;
-    }
-
-    public function getEmail(): string
-    {
-        return $this->email;
-    }
-
-    public function isConviteEnviado(): bool
-    {
-        return $this->conviteEnviado;
-    }
-
-    public function enviarConvite()
-    {
-        $this->conviteEnviado = true;
-        echo "Carta-convite enviada para {$this->nome} ({$this->email}).\n";
-    
-    }
-
-    public function confirmarRecebimento()
-    {
-        if (!$this->conviteEnviado) {
-            echo "Convite não enviado ainda para {$this->nome}.\n";
-            return;
-        }
-        $this->confirmaRecebimento = true;
-        echo "{$this->nome} confirmou recebimento da carta.\n";
-    }
-
-    public function isConfirmado(): bool
-    {
-        return $this->confirmaRecebimento;
-    }
-}
 
 class ConviteManager
 {
@@ -58,7 +8,7 @@ class ConviteManager
 
     public function menu()
     {
-        echo "=== Módulo 1: Convite e Cadastro de Alunos ===\n";
+        echo "\n=== Módulo 1: Convite e Cadastro de Alunos ===\n";
         echo "1 - Cadastrar novo aluno\n";
         echo "2 - Enviar convite para aluno\n";
         echo "3 - Confirmar recebimento de convite\n";
@@ -86,20 +36,22 @@ class ConviteManager
             default:
                 echo "Opção inválida.\n";
         }
+
         $this->menu();
     }
 
-    private function cadastrarAluno()
+    private function cadastrarAluno(): void
     {
         echo "Nome do aluno: ";
         $nome = trim(fgets(STDIN));
         echo "Email do aluno: ";
         $email = trim(fgets(STDIN));
+
         $this->alunos[] = new Aluno($nome, $email);
         echo "Aluno {$nome} cadastrado com sucesso.\n";
     }
 
-    private function enviarConvite()
+    private function enviarConvite(): void
     {
         if (empty($this->alunos)) {
             echo "Nenhum aluno cadastrado.\n";
@@ -108,14 +60,16 @@ class ConviteManager
         $this->listarAlunos();
         echo "Digite o número do aluno para enviar convite: ";
         $num = intval(trim(fgets(STDIN))) - 1;
+
         if (!isset($this->alunos[$num])) {
             echo "Aluno inválido.\n";
             return;
         }
+
         $this->alunos[$num]->enviarConvite();
     }
 
-    private function confirmarRecebimento()
+    private function confirmarRecebimento(): void
     {
         if (empty($this->alunos)) {
             echo "Nenhum aluno cadastrado.\n";
@@ -124,20 +78,23 @@ class ConviteManager
         $this->listarAlunos();
         echo "Digite o número do aluno que confirmou: ";
         $num = intval(trim(fgets(STDIN))) - 1;
+
         if (!isset($this->alunos[$num])) {
             echo "Aluno inválido.\n";
             return;
         }
+
         $this->alunos[$num]->confirmarRecebimento();
     }
 
-    private function listarConvites()
+    private function listarConvites(): void
     {
         if (empty($this->alunos)) {
             echo "Nenhum aluno cadastrado.\n";
             return;
         }
-        echo "Lista de convites:\n";
+
+        echo "\nLista de convites:\n";
         foreach ($this->alunos as $index => $aluno) {
             $num = $index + 1;
             $enviado = $aluno->isConviteEnviado() ? "Sim" : "Não";
@@ -146,8 +103,9 @@ class ConviteManager
         }
     }
 
-    private function listarAlunos()
+    private function listarAlunos(): void
     {
+        echo "\nLista de alunos:\n";
         foreach ($this->alunos as $index => $aluno) {
             $num = $index + 1;
             echo "{$num} - {$aluno->getNome()} ({$aluno->getEmail()})\n";
